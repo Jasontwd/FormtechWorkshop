@@ -1,1 +1,61 @@
+// SPDX-FileCopyrightText: 2017 Mikey Sklar for Adafruit Industries
+// modified Jason Tweedie 2/2/25
+// SPDX-License-Identifier: MIT
 
+#include <Adafruit_NeoPixel.h>
+
+#define N_LEDS 16 //set number of pixels in strip
+#define PIN     4
+
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDS, PIN, NEO_GRB + NEO_KHZ800);
+
+void setup() {
+  strip.begin();
+}
+
+int pos = 0, dir = 1; // Position, direction of "eye"
+
+void loop() {
+  int j;
+
+  // Draw 5 pixels centered on pos.  setPixelColor() will clip any
+  // pixels off the ends of the strip, we don't need to watch for that.
+  //strip.setPixelColor(pos - 5, 0x0000FF); // un comment to lenghten stripe
+  //strip.setPixelColor(pos - 4, 0x0000FF); // un comment to lenghten stripe
+  //strip.setPixelColor(pos - 3, 0x0000FF); // un comment to lenghten stripe
+  //strip.setPixelColor(pos - 2, 0x0000FF); // un comment to lenghten stripe
+  //strip.setPixelColor(pos - 1, 0x0000FF); // un comment to lenghten stripe
+  strip.setPixelColor(pos    , 0x0000FF); // Center pixel is brightest
+  //strip.setPixelColor(pos + 1, 0x0000FF); // un comment to lenghten stripe
+  //strip.setPixelColor(pos + 2, 0x0000FF); // un comment to lenghten stripe
+  //strip.setPixelColor(pos + 3, 0x0000FF); // un comment to lenghten stripe
+  //strip.setPixelColor(pos + 4, 0x0000FF); // un comment to lenghten stripe
+  //strip.setPixelColor(pos + 5, 0x0000FF); // un comment to lenghten stripe
+  
+  //Example Colors
+//0xFF0000: Red
+//0x00FF00: Green
+//0x0000FF: Blue
+//0xFFFF00: Yellow
+//0xFF00FF: Magenta
+//0x00FFFF: Cyan
+//0xFFFFFF: White
+//0x000000: Off/Black
+  
+  strip.show();
+  delay(20);// faster and slower 30 delay set higher to slow down
+
+  // Rather than being sneaky and erasing just the tail pixel,
+  // it's easier to erase it all and draw a new one next time.
+  for(j=-2; j<= 2; j++) strip.setPixelColor(pos+j, 0); // set value same as LED string above
+
+  // Bounce off ends of strip
+  pos += dir;
+  if(pos < 0) {
+    pos = 1;
+    dir = -dir;
+  } else if(pos >= strip.numPixels()) {
+    pos = strip.numPixels() - 2;// default is -2
+    dir = -dir;
+  }
+}
